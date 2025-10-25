@@ -257,10 +257,18 @@ export class AmpLanguageModel implements LanguageModelV2 {
     this.logger.debug(`[amp-sdk] Starting doGenerate with prompt: ${messagesPrompt.substring(0, 100)}...`);
 
     // Build Amp SDK options
+    // Map continue/resume to Amp SDK's single 'continue' parameter
+    // - If resume is set (string), use it as the session ID
+    // - Else use continue directly (can be boolean or string)
+    // - Otherwise, omit continue parameter (undefined)
+    const continueValue = this.settings.resume 
+      ? this.settings.resume 
+      : this.settings.continue;
+
     const ampOptions: ExecuteOptions['options'] = {
       dangerouslyAllowAll: this.settings.dangerouslyAllowAll,
       cwd: this.settings.cwd,
-      continue: this.settings.continue ? (this.settings.resume ?? this.sessionId) : undefined,
+      continue: continueValue,
       logLevel: this.settings.logLevel,
       logFile: this.settings.logFile,
       mcpConfig: this.settings.mcpConfig,
@@ -424,10 +432,18 @@ export class AmpLanguageModel implements LanguageModelV2 {
     this.logger.debug(`[amp-sdk] Starting doStream with prompt: ${messagesPrompt.substring(0, 100)}...`);
 
     // Build Amp SDK options
+    // Map continue/resume to Amp SDK's single 'continue' parameter
+    // - If resume is set (string), use it as the session ID
+    // - Else use continue directly (can be boolean or string)
+    // - Otherwise, omit continue parameter (undefined)
+    const continueValue = this.settings.resume 
+      ? this.settings.resume 
+      : this.settings.continue;
+
     const ampOptions: ExecuteOptions['options'] = {
       dangerouslyAllowAll: this.settings.dangerouslyAllowAll,
       cwd: this.settings.cwd,
-      continue: this.settings.continue ? (this.settings.resume ?? this.sessionId) : undefined,
+      continue: continueValue,
       logLevel: this.settings.logLevel,
       logFile: this.settings.logFile,
       mcpConfig: this.settings.mcpConfig,

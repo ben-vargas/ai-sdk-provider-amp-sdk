@@ -52,9 +52,35 @@ export function validateSettings(settings: AmpSettings): ValidationResult {
     }
   }
 
-  // Validate continue and resume (mutually exclusive)
-  if (settings.continue && settings.resume) {
-    errors.push('continue and resume cannot be used together');
+  // Validate continue (must be boolean or non-empty string if provided)
+  if (settings.continue !== undefined) {
+    if (typeof settings.continue === 'boolean') {
+      // Valid: true or false
+    } else if (typeof settings.continue === 'string') {
+      // Must be non-empty string (session ID)
+      if (settings.continue.trim() === '') {
+        errors.push('continue must be a non-empty string (session ID) when used as a string');
+      }
+    } else {
+      errors.push('continue must be a boolean or a string (session ID)');
+    }
+  }
+
+  // Validate resume (must be non-empty string if provided)
+  if (settings.resume !== undefined) {
+    if (typeof settings.resume !== 'string' || settings.resume.trim() === '') {
+      errors.push('resume must be a non-empty string (session ID)');
+    }
+  }
+
+  // Warn if both continue and resume are set (resume takes precedence)
+  // Only warn if both are valid (avoid warning when resume is invalid)
+  if (
+    settings.continue !== undefined && 
+    typeof settings.resume === 'string' && 
+    settings.resume.trim() !== ''
+  ) {
+    warnings.push('Both `continue` and `resume` are set. Using `resume`; ignoring `continue`.');
   }
 
   // Validate permissions
