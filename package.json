@@ -54,6 +54,7 @@
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
+    "example:check-auth": "npm run build && npx tsx examples/check-auth.ts",
     "example:basic": "npm run build && npx tsx examples/basic-usage.ts",
     "example:streaming": "npm run build && npx tsx examples/streaming.ts",
     "example:conversation": "npm run build && npx tsx examples/conversation-history.ts",
@@ -61,7 +62,19 @@
     "example:object-basic": "npm run build && npx tsx examples/generate-object-basic.ts",
     "example:object-constraints": "npm run build && npx tsx examples/generate-object-constraints.ts",
     "example:object-nested": "npm run build && npx tsx examples/generate-object-nested.ts",
-    "example:all": "npm run build && npm run example:basic && npm run example:streaming && npm run example:conversation && npm run example:config && npm run example:object-basic"
+    "example:abort-signal": "npm run build && npx tsx examples/abort-signal.ts",
+    "example:error-handling": "npm run build && npx tsx examples/error-handling.ts",
+    "example:long-running": "npm run build && npx tsx examples/long-running-tasks.ts",
+    "example:session-management": "npm run build && npx tsx examples/session-management.ts",
+    "example:session-validate": "npm run build && npx tsx examples/session-settings-validate.ts",
+    "example:permissions": "npm run build && npx tsx examples/permissions.ts",
+    "example:mcp": "npm run build && npx tsx examples/mcp-integration.ts",
+    "example:toolbox": "npm run build && npx tsx examples/toolbox.ts",
+    "example:logging-verbose": "npm run build && npx tsx examples/logging-verbose.ts",
+    "example:logging-disabled": "npm run build && npx tsx examples/logging-disabled.ts",
+    "example:logging-custom": "npm run build && npx tsx examples/logging-custom-logger.ts",
+    "example:debug-json": "npm run build && npx tsx examples/debug-json.ts",
+    "example:all": "npm run build && npx tsx examples/check-auth.ts && npx tsx examples/basic-usage.ts && npx tsx examples/streaming.ts && npx tsx examples/conversation-history.ts && npx tsx examples/custom-config.ts && npx tsx examples/generate-object-basic.ts && npx tsx examples/generate-object-constraints.ts && npx tsx examples/generate-object-nested.ts && npx tsx examples/abort-signal.ts && npx tsx examples/error-handling.ts && npx tsx examples/long-running-tasks.ts && npx tsx examples/session-management.ts && npx tsx examples/session-settings-validate.ts && npx tsx examples/permissions.ts && npx tsx examples/mcp-integration.ts && npx tsx examples/toolbox.ts && npx tsx examples/logging-verbose.ts && npx tsx examples/logging-disabled.ts && npx tsx examples/logging-custom-logger.ts && npx tsx examples/debug-json.ts"
   },
   "dependencies": {
     "@ai-sdk/provider": "^2.0.0",
