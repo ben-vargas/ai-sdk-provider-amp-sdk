@@ -25,10 +25,18 @@ async function main() {
     let charCount = 0;
     let chunkCount = 0;
 
+    const controller1 = new AbortController();
+    const TASK1_TIMEOUT_MS = 15000;
+    const task1Timeout = setTimeout(() => {
+      console.log('\n   ⏱️  Cancelling task 1 after timeout...');
+      controller1.abort();
+    }, TASK1_TIMEOUT_MS);
+
     const { textStream } = streamText({
       model: amp('default'),
       prompt:
         'Analyze the architecture of a distributed microservices system with API gateway, service mesh, and event-driven communication. Explain in detail.',
+      abortSignal: controller1.signal,
     });
 
     // Track progress as chunks arrive
@@ -43,10 +51,12 @@ async function main() {
       }
     }
 
+    clearTimeout(task1Timeout);
     const totalTime = ((Date.now() - startTime) / 1000).toFixed(2);
     console.log(`\n   ✅ Completed in ${totalTime}s`);
     console.log(`      Total: ${chunkCount} chunks, ${charCount} characters`);
   } catch (error: any) {
+    clearTimeout(task1Timeout);
     console.error('   ❌ Error:', error.message);
   }
 
@@ -112,7 +122,8 @@ async function main() {
       const bar = '█'.repeat(filled) + '░'.repeat(empty);
       const percent = (progress * 100).toFixed(0);
 
-      process.stdout.write(`\r   [${bar}] ${percent}% (${charCount}/${TARGET_CHARS} chars)`);
+      const displayChars = Math.min(charCount, TARGET_CHARS);
+      process.stdout.write(`\r   [${bar}] ${percent}% (${displayChars}/${TARGET_CHARS} chars)`);
 
       if (charCount >= TARGET_CHARS) break;
     }
@@ -129,6 +140,7 @@ async function main() {
 
     const startTime = Date.now();
     const TARGET_CHUNKS = 50;
+    const MAX_SECONDS = 10;
     let chunkCount = 0;
 
     const { textStream } = streamText({
@@ -151,7 +163,8 @@ async function main() {
         );
       }
 
-      if (chunkCount >= TARGET_CHUNKS) break;
+      const elapsedSec = (Date.now() - startTime) / 1000;
+      if (chunkCount >= TARGET_CHUNKS || elapsedSec >= MAX_SECONDS) break;
     }
 
     const totalTime = ((Date.now() - startTime) / 1000).toFixed(2);
@@ -183,21 +196,40 @@ async function main() {
     const results = await Promise.all(
       tasks.map(async (task, index) => {
         const startTime = Date.now();
-
-        const { textStream } = streamText({
-          model: amp('default'),
-          prompt: task.prompt,
-        });
+        const controller = new AbortController();
+        const TASK_TIMEOUT_MS = 7000;
+        const taskTimeout = setTimeout(() => controller.abort(), TASK_TIMEOUT_MS);
 
         let charCount = 0;
-        for await (const chunk of textStream) {
-          charCount += chunk.length;
+        let timedOut = false;
+        try {
+          const { textStream } = streamText({
+            model: amp('default'),
+            prompt: task.prompt,
+            abortSignal: controller.signal,
+          });
+
+          for await (const chunk of textStream) {
+            charCount += chunk.length;
+          }
+        } catch (error: any) {
+          const msg = String(error?.message || '').toLowerCase();
+          if (msg.includes('aborted') || error?.name === 'AbortError' || error?.code === 'ABORT_ERR') {
+            timedOut = true;
+            console.log(`   ⚠️  ${task.name} timed out after ${TASK_TIMEOUT_MS}ms (${charCount} chars)`);
+          } else {
+            throw error;
+          }
+        } finally {
+          clearTimeout(taskTimeout);
         }
 
         const duration = ((Date.now() - startTime) / 1000).toFixed(2);
-        console.log(`   ✅ ${task.name} completed in ${duration}s (${charCount} chars)`);
+        if (!timedOut) {
+          console.log(`   ✅ ${task.name} completed in ${duration}s (${charCount} chars)`);
+        }
 
-        return { task: task.name, duration, charCount };
+        return { task: task.name, duration, charCount, timedOut };
       })
     );
 
@@ -212,13 +244,13 @@ async function main() {
   // Example 6: Retry mechanism for long tasks
   console.log('\n\n6. Retry mechanism for failed long tasks...');
   try {
-    async function executeWithRetry(prompt: string, maxRetries = 3) {
+    async function executeWithRetry(prompt: string, maxRetries = 2) {
       for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
           console.log(`   Attempt ${attempt}/${maxRetries}...`);
 
           const controller = new AbortController();
-          const timeout = setTimeout(() => controller.abort(), 10000);
+          const timeout = setTimeout(() => controller.abort(), 5000);
 
           const { textStream } = streamText({
             model: amp('default'),
@@ -237,7 +269,7 @@ async function main() {
           console.log(`   Attempt ${attempt} failed: ${error.message}`);
 
           if (attempt < maxRetries) {
-            const backoff = Math.pow(2, attempt) * 1000;
+            const backoff = Math.min(2000, attempt * 1000);
             console.log(`   Waiting ${backoff}ms before retry...`);
             await new Promise((resolve) => setTimeout(resolve, backoff));
           } else {

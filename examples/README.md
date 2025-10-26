@@ -188,10 +188,10 @@ npx tsx examples/long-running-tasks.ts
 
 ---
 
-### 10. Session Settings Test (`test-session-settings.ts`)
+### 10. Session Settings Validation (`session-settings-validate.ts`)
 **Purpose**: Validate session management settings and validation rules.
 ```bash
-npx tsx examples/test-session-settings.ts
+npx tsx examples/session-settings-validate.ts
 ```
 **Tests**:
 - ✅ `continue: true` creates model successfully
@@ -325,15 +325,6 @@ npx tsx examples/debug-json.ts
 
 ---
 
-### 18. Test Extract (`test-extract.ts`)
-**Purpose**: Test the JSON extraction utility function directly.
-```bash
-npx tsx examples/test-extract.ts
-```
-**Key concepts**: JSON extraction from markdown, parsing validation
-
----
-
 ## Running Examples
 
 ### Quick Run Commands
@@ -365,8 +356,7 @@ npx tsx examples/logging-custom-logger.ts
 
 # Utility examples
 npx tsx examples/debug-json.ts
-npx tsx examples/test-extract.ts
-npx tsx examples/test-session-settings.ts
+npx tsx examples/session-settings-validate.ts
 
 # Run all quick-start examples in sequence
 npm run example:all
@@ -406,12 +396,11 @@ npx tsx examples/<filename>.ts
 
 ### ⚙️ **Session Management**
 - `session-management.ts` - Session continuation patterns
-- `test-session-settings.ts` - Settings validation
+- `session-settings-validate.ts` - Settings validation
 
 ### 🔧 **Structured Output & Utilities**
 - `generate-object.ts` - Zod schema validation
 - `debug-json.ts` - JSON debugging
-- `test-extract.ts` - JSON extraction testing
 
 ---
 

@@ -52,17 +52,10 @@ export function validateSettings(settings: AmpSettings): ValidationResult {
     }
   }
 
-  // Validate continue (must be boolean or non-empty string if provided)
+  // Validate continue (must be strictly boolean if provided)
   if (settings.continue !== undefined) {
-    if (typeof settings.continue === 'boolean') {
-      // Valid: true or false
-    } else if (typeof settings.continue === 'string') {
-      // Must be non-empty string (session ID)
-      if (settings.continue.trim() === '') {
-        errors.push('continue must be a non-empty string (session ID) when used as a string');
-      }
-    } else {
-      errors.push('continue must be a boolean or a string (session ID)');
+    if (typeof settings.continue !== 'boolean') {
+      errors.push('continue must be a boolean (true|false)');
     }
   }
 

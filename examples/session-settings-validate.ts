@@ -37,6 +37,7 @@ async function testSettings() {
     try {
       const model5 = amp('default', { resume: '' });
       console.log('   UNEXPECTED: Created successfully (should have failed!)\n');
+      throw new Error('Expected validation to fail for empty resume');
     } catch (error) {
       console.log('   ✅ Failed as expected:', error instanceof Error ? error.message : String(error));
       console.log();
@@ -48,6 +49,7 @@ async function testSettings() {
       // @ts-expect-error - Testing runtime validation
       const model6 = amp('default', { continue: 'true' });
       console.log('   UNEXPECTED: Created successfully (should have failed!)\n');
+      throw new Error('Expected validation to fail for non-boolean continue');
     } catch (error) {
       console.log('   ✅ Failed as expected:', error instanceof Error ? error.message : String(error));
       console.log();

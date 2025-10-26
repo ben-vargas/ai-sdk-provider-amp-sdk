@@ -65,16 +65,12 @@ export interface AmpSettings {
 
   /**
    * Continue a conversation thread.
-   * - `true`: Continue the most recent thread
-   * - `string`: Continue a specific thread by session ID (e.g., 'T-abc123-def456')
-   * - `undefined`: Start a new thread (default)
-   * 
-   * Note: The provider also accepts a `resume` setting for convenience,
-   * which is mapped to this `continue` parameter internally.
-   * 
-   * @see {@link https://ampcode.com/manual/sdk#thread-continuity}
+   * - true: Continue the most recent thread
+   * - false or undefined: Start a new thread
+   *
+   * For resuming a specific session by ID, use `resume`.
    */
-  continue?: boolean | string;
+  continue?: boolean;
 
   /**
    * Resume a specific session by ID (provider convenience alias).
