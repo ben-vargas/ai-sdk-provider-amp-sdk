@@ -2,15 +2,36 @@
 
 > **Vercel AI SDK v5 provider for Amp via the Amp SDK (`@sourcegraph/amp-sdk`)**
 
+<p align="center">
+  <img src="https://img.shields.io/badge/status-alpha-00A79E" alt="alpha status">
+  <a href="https://www.npmjs.com/package/ai-sdk-provider-amp-sdk"><img src="https://img.shields.io/npm/v/ai-sdk-provider-amp-sdk?color=00A79E" alt="npm version" /></a>
+  <a href="https://www.npmjs.com/package/ai-sdk-provider-amp-sdk"><img src="https://img.shields.io/npm/unpacked-size/ai-sdk-provider-amp-sdk?color=00A79E" alt="unpacked size" /></a>
+  <a href="https://www.npmjs.com/package/ai-sdk-provider-amp-sdk"><img src="https://img.shields.io/npm/dm/ai-sdk-provider-amp-sdk?color=00A79E" alt="monthly downloads" /></a>
+  <img src="https://img.shields.io/badge/AI%20SDK-v5-00A79E" alt="AI SDK v5">
+  <a href="https://nodejs.org/en/about/releases/"><img src="https://img.shields.io/badge/node-%3E%3D18-00A79E" alt="Node.js ≥ 18" /></a>
+  <a href="https://www.npmjs.com/package/ai-sdk-provider-amp-sdk"><img src="https://img.shields.io/npm/l/ai-sdk-provider-amp-sdk?color=00A79E" alt="License: MIT" /></a>
+</p>
+
 **ai-sdk-provider-amp-sdk** lets you use Amp through the [Vercel AI SDK](https://sdk.vercel.ai/docs) with the official `@sourcegraph/amp-sdk` package.
+
+> **⚠️ Compatibility**: This provider targets **Vercel AI SDK v5**. AI SDK v5 uses split versioning: the core `ai` package is v5.x while provider helper packages have independent major versions:
+> - `ai`: `^5.0.0`
+> - `@ai-sdk/provider`: `^2.0.0`
+> - `@ai-sdk/provider-utils`: `^3.0.0`
+> 
+> Seeing `@ai-sdk/provider: ^2.x` or `@ai-sdk/provider-utils: ^3.x` in package.json is expected and fully compatible with `ai@^5`. You don't need to install the `@ai-sdk/*` packages yourself—this provider depends on them.
+> 
+> **Not compatible** with AI SDK v4 or earlier. **Not tested** with AI SDK v6 beta releases.
 
 ## 📦 Installation
 
 ### 1. Install the provider
 
 ```bash
-npm install ai-sdk-provider-amp-sdk ai
+npm install ai-sdk-provider-amp-sdk ai zod
 ```
+
+> **Note**: `zod` is a peer dependency required for object generation features. Install it to use `generateObject` and structured output capabilities.
 
 ### 2. Authenticate with Amp
 
@@ -52,7 +73,7 @@ console.log(text);
 import { streamText } from 'ai';
 import { amp } from 'ai-sdk-provider-amp-sdk';
 
-const result = streamText({
+const result = await streamText({
   model: amp('default'),
   prompt: 'Tell me a story about a robot.',
 });
@@ -81,6 +102,11 @@ const { object } = await generateObject({
 
 console.log(object);
 ```
+
+> **Learn More**: For comprehensive object generation examples, see the [examples/README.md](examples/README.md):
+> - **Basic patterns** (`example:object-basic`) - Progressive examples from simple objects to best practices
+> - **Advanced constraints** (`example:object-constraints`) - Enums, number ranges, string patterns, array validation
+> - **Nested structures** (`example:object-nested`) - Complex hierarchical and recursive patterns
 
 ## 🎯 Models
 
@@ -226,53 +252,69 @@ Quick summary:
 
 ## 📚 Examples
 
-The `examples/` directory contains several working examples:
+The `examples/` directory contains **20+ comprehensive examples** covering all provider features:
 
-- **basic-usage.ts** - Simple text generation
-- **streaming.ts** - Streaming responses
-- **conversation-history.ts** - Multi-turn conversations
-- **custom-config.ts** - Custom provider configuration
-- **generate-object.ts** - Structured object generation
-
-Run examples:
+### Quick Example Commands
 
 ```bash
-npm run example:basic
-npm run example:streaming
-npm run example:conversation
-npm run example:config
-npm run example:object
-npm run example:all  # Run all examples
+npm run example:basic               # Simple text generation
+npm run example:streaming           # Real-time streaming
+npm run example:conversation        # Multi-turn conversations
+npm run example:object-basic        # Object generation basics
+npm run example:object-constraints  # Advanced Zod validation
+npm run example:object-nested       # Complex nested structures
+npm run example:error-handling      # Error handling patterns
+npm run example:abort-signal        # Request cancellation
+npm run example:all                 # Run all examples
 ```
+
+### Example Categories
+
+- 🚀 **Quick Start** - Basic usage, streaming, conversations, configuration
+- 🏗️ **Structured Output** - Object generation (basic, constraints, nested)
+- 🛡️ **Error Handling** - Abort signals, error recovery, long-running tasks
+- ⭐ **Amp Features** - Permissions, MCP integration, toolbox scripts
+- 📊 **Session Management** - Continue conversations, resume sessions
+- 🔧 **Logging** - Verbose, disabled, and custom logger configurations
+
+**📖 See [examples/README.md](examples/README.md) for detailed documentation, usage instructions, and all 20+ examples.**
 
 ## 🔍 Error Handling
 
-The provider includes built-in error handling:
+Handle errors using standard try/catch blocks:
 
 ```typescript
-import { 
-  isAuthenticationError, 
-  isTimeoutError, 
-  getErrorMetadata 
-} from 'ai-sdk-provider-amp-sdk';
+import { generateText } from 'ai';
+import { amp } from 'ai-sdk-provider-amp-sdk';
 
 try {
   const { text } = await generateText({
     model: amp('default'),
     prompt: 'Hello!',
   });
+  console.log(text);
 } catch (error) {
-  if (isAuthenticationError(error)) {
-    console.error('Authentication failed. Check your AMP_API_KEY.');
-  } else if (isTimeoutError(error)) {
-    console.error('Request timed out. Please try again.');
-  } else {
-    const metadata = getErrorMetadata(error);
+  // TypeScript: error is 'unknown' in catch blocks
+  if (error instanceof Error) {
     console.error('Error:', error.message);
-    console.error('Metadata:', metadata);
+    
+    // Check for specific error types by examining the error message
+    if (error.message.includes('authentication')) {
+      console.error('Authentication failed. Run `amp login` or set AMP_API_KEY.');
+    } else if (error.message.includes('timeout')) {
+      console.error('Request timed out. Please try again.');
+    } else if (error.message.includes('abort')) {
+      console.error('Request was cancelled.');
+    }
+  } else {
+    console.error('Unknown error:', error);
   }
 }
 ```
+
+> **See examples for comprehensive patterns**:
+> - [`error-handling.ts`](examples/error-handling.ts) - Error categorization, validation, retry logic with exponential backoff
+> - [`abort-signal.ts`](examples/abort-signal.ts) - Request cancellation, timeout management, cleanup
 
 ## ⚠️ Limitations
 
@@ -319,6 +361,12 @@ npm run typecheck
 ## 📄 License
 
 MIT
+
+## 👤 Author
+
+**Ben Vargas**
+- 𝕏 [@ben_vargas](https://x.com/ben_vargas)
+- GitHub [@ben-vargas](https://github.com/ben-vargas)
 
 ## 🙏 Acknowledgments
 

@@ -45,7 +45,7 @@ console.log(text);
 import { streamText } from 'ai';
 import { amp } from 'ai-sdk-provider-amp-sdk';
 
-const result = streamText({
+const result = await streamText({
   model: amp('default'),
   prompt: 'Tell me a story.',
 });
@@ -132,14 +132,8 @@ const response2 = await generateText({
 ## 6. Error Handling
 
 ```typescript
-import { 
-  generateText 
-} from 'ai';
-import { 
-  amp,
-  isAuthenticationError,
-  isTimeoutError,
-} from 'ai-sdk-provider-amp-sdk';
+import { generateText } from 'ai';
+import { amp } from 'ai-sdk-provider-amp-sdk';
 
 try {
   const { text } = await generateText({
@@ -148,12 +142,20 @@ try {
   });
   console.log(text);
 } catch (error) {
-  if (isAuthenticationError(error)) {
-    console.error('Invalid API key');
-  } else if (isTimeoutError(error)) {
-    console.error('Request timed out');
+  // TypeScript: error is 'unknown' in catch blocks
+  if (error instanceof Error) {
+    console.error('Error:', error.message);
+    
+    // Check for specific error types by examining the error message
+    if (error.message.includes('authentication')) {
+      console.error('Authentication failed. Run `amp login` or set AMP_API_KEY.');
+    } else if (error.message.includes('timeout')) {
+      console.error('Request timed out. Please try again.');
+    } else if (error.message.includes('abort')) {
+      console.error('Request was cancelled.');
+    }
   } else {
-    console.error('Error:', error);
+    console.error('Unknown error:', error);
   }
 }
 ```
@@ -219,7 +221,13 @@ npm run example:conversation
 npm run example:config
 
 # Object generation
-npm run example:object
+npm run example:object-basic
+npm run example:object-constraints
+npm run example:object-nested
+
+# Error handling
+npm run example:error-handling
+npm run example:abort-signal
 
 # Run all examples
 npm run example:all
