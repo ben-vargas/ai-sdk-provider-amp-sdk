@@ -7,33 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-- Removed strict AMP_API_KEY requirement - now supports both `amp login` and environment variable authentication
-- Updated error messages to guide users on both authentication methods
-- Enhanced authentication error handling to catch more error types from CLI
-
-### Added
-- Initial implementation of Amp SDK provider for Vercel AI SDK v5
-- Support for text generation (streaming and non-streaming)
-- Support for object generation with Zod schemas
-- Session management and conversation continuity
-- Custom configuration options
-- MCP server configuration support
-- Permission management
-- Error handling utilities
-- Comprehensive examples
-- Full TypeScript support
-- Flexible authentication: AMP_API_KEY env var OR `amp login` credentials
-- Detailed authentication guide (AUTHENTICATION.md)
-
-## [0.1.0] - 2025-01-XX
+## [0.1.0] - 2025-10-25
 
 ### Added
 - Initial release of ai-sdk-provider-amp-sdk
-- Integration with @sourcegraph/amp-sdk
-- Support for Vercel AI SDK v5
-- Basic text generation
-- Streaming support
-- Object generation
-- Configuration options
-- Examples and documentation
+- Integration with @sourcegraph/amp-sdk for Vercel AI SDK v5
+- Support for text generation (streaming and non-streaming)
+- Support for object generation with Zod schemas
+- Session management and conversation continuity
+- Custom configuration options (cwd, maxTurns, logLevel, verbose, etc.)
+- MCP server configuration support
+- Permission management system
+- Flexible authentication: AMP_API_KEY env var OR `amp login` credentials
+- Comprehensive examples directory with 20+ examples
+- Full TypeScript support with type definitions
+- Error handling utilities and patterns
+- Detailed documentation (README, QUICKSTART, AUTHENTICATION guides)
+- Professional badge section with alpha status
