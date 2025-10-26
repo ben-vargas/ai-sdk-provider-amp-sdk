@@ -93,27 +93,72 @@ npm run example:config
 
 ---
 
-### 5. Object Generation (`generate-object.ts`)
-**Purpose**: Generate structured objects with Zod schema validation.
+### 5. Object Generation - Basic (`generate-object-basic.ts`)
+**Purpose**: Learn fundamental object generation patterns with progressive examples.
 ```bash
-npm run example:object
+npx tsx examples/generate-object-basic.ts
 ```
 **Key concepts**:
-- Structured output with `generateObject()`
-- Zod schema definition and validation
-- Complex nested objects
-- Type-safe output
-- JSON mode with automatic extraction
+- Simple objects with primitive types (string, number, boolean)
+- Arrays and optional fields
+- Building complexity gradually
+- Schema descriptions for better generation
+- Best practices with clear prompts
 
-**Example schemas**:
-- Recipe with ingredients and instructions
-- User profile with typed fields
+**5 Progressive Examples**:
+1. Simple object with primitives
+2. Objects with arrays
+3. Optional fields
+4. Building complexity step-by-step
+5. Best practices demonstration
+
+---
+
+### 6. Object Generation - Constraints (`generate-object-constraints.ts`)
+**Purpose**: Master advanced validation with Zod constraints.
+```bash
+npx tsx examples/generate-object-constraints.ts
+```
+**Key concepts**:
+- Enums and literal types for fixed value sets
+- Number ranges (min, max, int, multipleOf)
+- String patterns (regex, email, phone, URL)
+- Array length constraints
+- Complex combined validations
+
+**5 Detailed Examples**:
+1. Enums and status fields (task management)
+2. Number constraints (game character stats)
+3. String patterns (user registration with validation)
+4. Array constraints (music playlist)
+5. Complex validation (invoice with business rules)
+
+---
+
+### 7. Object Generation - Nested (`generate-object-nested.ts`)
+**Purpose**: Generate complex hierarchical and nested structures.
+```bash
+npx tsx examples/generate-object-nested.ts
+```
+**Key concepts**:
+- Deeply nested objects
+- Arrays of objects
+- Complex data relationships
+- Hierarchical structures
+- Recursive patterns (with depth limits)
+
+**5 Complex Examples**:
+1. Company with departments and teams
+2. E-commerce order with nested items
+3. Application configuration with nested settings
+4. Social media post with engagement hierarchy
+5. File system directory tree
 
 ---
 
 ## Error Handling & Control Flow
 
-### 6. Abort Signal (`abort-signal.ts`)
+### 8. Abort Signal (`abort-signal.ts`)
 **Purpose**: Cancel in-progress requests using AbortController.
 ```bash
 npx tsx examples/abort-signal.ts
@@ -399,7 +444,9 @@ npx tsx examples/<filename>.ts
 - `session-settings-validate.ts` - Settings validation
 
 ### 🔧 **Structured Output & Utilities**
-- `generate-object.ts` - Zod schema validation
+- `generate-object-basic.ts` - Progressive object generation examples
+- `generate-object-constraints.ts` - Advanced Zod validation constraints
+- `generate-object-nested.ts` - Complex nested and hierarchical structures
 - `debug-json.ts` - JSON debugging
 
 ---
