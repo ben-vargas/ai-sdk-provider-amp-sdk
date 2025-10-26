@@ -58,8 +58,10 @@
     "example:streaming": "npm run build && npx tsx examples/streaming.ts",
     "example:conversation": "npm run build && npx tsx examples/conversation-history.ts",
     "example:config": "npm run build && npx tsx examples/custom-config.ts",
-    "example:object": "npm run build && npx tsx examples/generate-object.ts",
-    "example:all": "npm run build && npm run example:basic && npm run example:streaming && npm run example:conversation && npm run example:config && npm run example:object"
+    "example:object-basic": "npm run build && npx tsx examples/generate-object-basic.ts",
+    "example:object-constraints": "npm run build && npx tsx examples/generate-object-constraints.ts",
+    "example:object-nested": "npm run build && npx tsx examples/generate-object-nested.ts",
+    "example:all": "npm run build && npm run example:basic && npm run example:streaming && npm run example:conversation && npm run example:config && npm run example:object-basic"
   },
   "dependencies": {
     "@ai-sdk/provider": "^2.0.0",

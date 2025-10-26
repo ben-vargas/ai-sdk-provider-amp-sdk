@@ -31,7 +31,7 @@ npm run build
 
 ## Setup & Verification
 
-### Check Authentication (`check-auth.ts`)
+### 1. Check Authentication (`check-auth.ts`)
 **Purpose**: Verify Amp CLI is installed and authenticated before running other examples.
 ```bash
 npx tsx examples/check-auth.ts
@@ -44,7 +44,7 @@ npx tsx examples/check-auth.ts
 
 ## Quick Start Examples
 
-### 1. Basic Usage (`basic-usage.ts`)
+### 2. Basic Usage (`basic-usage.ts`)
 **Purpose**: The simplest example - generate text with Amp and display metadata.
 ```bash
 npm run example:basic
@@ -53,7 +53,7 @@ npm run example:basic
 
 ---
 
-### 2. Streaming (`streaming.ts`)
+### 3. Streaming (`streaming.ts`)
 **Purpose**: Demonstrate real-time streaming for responsive user experiences.
 ```bash
 npm run example:streaming
@@ -62,7 +62,7 @@ npm run example:streaming
 
 ---
 
-### 3. Conversation History (`conversation-history.ts`)
+### 4. Conversation History (`conversation-history.ts`)
 **Purpose**: Show how to maintain context across multiple conversation turns.
 ```bash
 npm run example:conversation
@@ -71,7 +71,7 @@ npm run example:conversation
 
 ---
 
-### 4. Custom Configuration (`custom-config.ts`)
+### 5. Custom Configuration (`custom-config.ts`)
 **Purpose**: Configure Amp settings at provider and model levels.
 ```bash
 npm run example:config
@@ -93,7 +93,7 @@ npm run example:config
 
 ---
 
-### 5. Object Generation - Basic (`generate-object-basic.ts`)
+### 6. Object Generation - Basic (`generate-object-basic.ts`)
 **Purpose**: Learn fundamental object generation patterns with progressive examples.
 ```bash
 npx tsx examples/generate-object-basic.ts
@@ -114,7 +114,7 @@ npx tsx examples/generate-object-basic.ts
 
 ---
 
-### 6. Object Generation - Constraints (`generate-object-constraints.ts`)
+### 7. Object Generation - Constraints (`generate-object-constraints.ts`)
 **Purpose**: Master advanced validation with Zod constraints.
 ```bash
 npx tsx examples/generate-object-constraints.ts
@@ -135,7 +135,7 @@ npx tsx examples/generate-object-constraints.ts
 
 ---
 
-### 7. Object Generation - Nested (`generate-object-nested.ts`)
+### 8. Object Generation - Nested (`generate-object-nested.ts`)
 **Purpose**: Generate complex hierarchical and nested structures.
 ```bash
 npx tsx examples/generate-object-nested.ts
@@ -158,7 +158,7 @@ npx tsx examples/generate-object-nested.ts
 
 ## Error Handling & Control Flow
 
-### 8. Abort Signal (`abort-signal.ts`)
+### 9. Abort Signal (`abort-signal.ts`)
 **Purpose**: Cancel in-progress requests using AbortController.
 ```bash
 npx tsx examples/abort-signal.ts
@@ -177,7 +177,7 @@ npx tsx examples/abort-signal.ts
 
 ---
 
-### 7. Error Handling (`error-handling.ts`)
+### 10. Error Handling (`error-handling.ts`)
 **Purpose**: Handle different error types gracefully.
 ```bash
 npx tsx examples/error-handling.ts
@@ -197,7 +197,7 @@ npx tsx examples/error-handling.ts
 
 ---
 
-### 8. Long Running Tasks (`long-running-tasks.ts`)
+### 11. Long Running Tasks (`long-running-tasks.ts`)
 **Purpose**: Manage long-running operations with progress tracking.
 ```bash
 npx tsx examples/long-running-tasks.ts
@@ -219,7 +219,7 @@ npx tsx examples/long-running-tasks.ts
 
 ## Advanced Examples
 
-### 9. Session Management (`session-management.ts`)
+### 12. Session Management (`session-management.ts`)
 **Purpose**: Reference documentation for session continuation patterns.
 
 **Key patterns demonstrated**:
@@ -233,7 +233,7 @@ npx tsx examples/long-running-tasks.ts
 
 ---
 
-### 10. Session Settings Validation (`session-settings-validate.ts`)
+### 13. Session Settings Validation (`session-settings-validate.ts`)
 **Purpose**: Validate session management settings and validation rules.
 ```bash
 npx tsx examples/session-settings-validate.ts
@@ -250,7 +250,7 @@ npx tsx examples/session-settings-validate.ts
 
 ## Amp-Specific Features
 
-### 11. Permissions (`permissions.ts`) 🔐 **KEY AMP FEATURE**
+### 14. Permissions (`permissions.ts`) 🔐 **KEY AMP FEATURE**
 **Purpose**: Control tool usage with fine-grained permissions.
 ```bash
 npx tsx examples/permissions.ts
@@ -272,7 +272,7 @@ npx tsx examples/permissions.ts
 
 ---
 
-### 12. MCP Integration (`mcp-integration.ts`) 🔌 **KEY AMP FEATURE**
+### 15. MCP Integration (`mcp-integration.ts`) 🔌 **KEY AMP FEATURE**
 **Purpose**: Extend Amp with Model Context Protocol servers.
 ```bash
 npx tsx examples/mcp-integration.ts
@@ -294,7 +294,7 @@ npx tsx examples/mcp-integration.ts
 
 ---
 
-### 13. Toolbox (`toolbox.ts`) 🧰 **AMP FEATURE**
+### 16. Toolbox (`toolbox.ts`) 🧰 **AMP FEATURE**
 **Purpose**: Add custom tools via toolbox scripts.
 ```bash
 npx tsx examples/toolbox.ts
@@ -317,7 +317,7 @@ npx tsx examples/toolbox.ts
 
 ## Logging & Debugging
 
-### 14. Logging - Verbose (`logging-verbose.ts`)
+### 17. Logging - Verbose (`logging-verbose.ts`)
 **Purpose**: Enable detailed debug logging for development.
 ```bash
 npx tsx examples/logging-verbose.ts
@@ -326,7 +326,7 @@ npx tsx examples/logging-verbose.ts
 
 ---
 
-### 15. Logging - Disabled (`logging-disabled.ts`)
+### 18. Logging - Disabled (`logging-disabled.ts`)
 **Purpose**: Disable all logging for production/quiet mode.
 ```bash
 npx tsx examples/logging-disabled.ts
@@ -335,7 +335,7 @@ npx tsx examples/logging-disabled.ts
 
 ---
 
-### 16. Logging - Custom Logger (`logging-custom-logger.ts`)
+### 19. Logging - Custom Logger (`logging-custom-logger.ts`)
 **Purpose**: Integrate with existing logging infrastructure.
 ```bash
 npx tsx examples/logging-custom-logger.ts
@@ -358,7 +358,7 @@ npx tsx examples/logging-custom-logger.ts
 
 ## Utility Examples
 
-### 17. Debug JSON (`debug-json.ts`)
+### 20. Debug JSON (`debug-json.ts`)
 **Purpose**: Debug JSON generation and extraction from responses.
 ```bash
 npx tsx examples/debug-json.ts
@@ -382,7 +382,9 @@ npm run example:basic
 npm run example:streaming
 npm run example:conversation
 npm run example:config
-npm run example:object
+npm run example:object-basic
+npm run example:object-constraints
+npm run example:object-nested
 
 # Error handling & control flow
 npx tsx examples/abort-signal.ts
