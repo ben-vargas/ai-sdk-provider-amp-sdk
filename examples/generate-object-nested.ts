@@ -89,7 +89,7 @@ async function example2_ecommerceOrder() {
             productId: z.string(),
             name: z.string(),
             category: z.string(),
-            quantity: z.number().positive(),
+            quantity: z.number().int().positive(),
             unitPrice: z.number().positive(),
             variations: z
               .object({
@@ -108,7 +108,7 @@ async function example2_ecommerceOrder() {
         status: z.string().describe('Payment status'),
         card: z
           .object({
-            last4: z.string().length(4),
+            last4: z.string().regex(/^\d{4}$/, 'Must be 4 digits'),
             brand: z.string(),
           })
           .optional(),
@@ -248,10 +248,10 @@ async function example4_socialMediaPost() {
         hashtags: z.array(z.string()).optional(),
       }),
       engagement: z.object({
-        likes: z.number(),
-        reposts: z.number(),
+        likes: z.number().int().min(0),
+        reposts: z.number().int().min(0),
         comments: z.object({
-          count: z.number(),
+          count: z.number().int().min(0),
           topComments: z
             .array(
               z.object({
@@ -261,23 +261,23 @@ async function example4_socialMediaPost() {
                   displayName: z.string(),
                 }),
                 text: z.string(),
-                likes: z.number(),
-                replies: z.number(),
+                likes: z.number().int().min(0),
+                replies: z.number().int().min(0),
               })
             )
             .max(3),
         }),
       }),
       metadata: z.object({
-        createdAt: z.string().describe('ISO 8601 datetime'),
+        createdAt: z.string().datetime().describe('ISO 8601 datetime'),
         source: z.string().describe('Platform or app used'),
         location: z
           .object({
             name: z.string(),
             coordinates: z
               .object({
-                lat: z.number(),
-                lng: z.number(),
+                lat: z.number().min(-90).max(90),
+                lng: z.number().min(-180).max(180),
               })
               .optional(),
           })

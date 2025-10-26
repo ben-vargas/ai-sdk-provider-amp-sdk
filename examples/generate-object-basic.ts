@@ -49,7 +49,7 @@ async function example2_arrays() {
       teamName: z.string().describe('Name of the development team'),
       members: z.array(z.string()).describe('List of team member names'),
       technologies: z.array(z.string()).describe('Technologies used by the team'),
-      projectCount: z.number().describe('Number of active projects'),
+      projectCount: z.number().int().min(0).describe('Number of active projects'),
     }),
     prompt: 'Generate data for a web development team working on e-commerce projects.',
   });
@@ -67,9 +67,9 @@ async function example3_optionalFields() {
     model: amp('default'),
     schema: z.object({
       productName: z.string().describe('Name of the product'),
-      price: z.number().describe('Price in USD'),
+      price: z.number().positive().multipleOf(0.01).describe('Price in USD'),
       description: z.string().describe('Product description'),
-      discount: z.number().optional().describe('Discount percentage if applicable'),
+      discount: z.number().min(0).max(1).optional().describe('Discount rate between 0 and 1 (e.g., 0.15 for 15% off)'),
       tags: z.array(z.string()).optional().describe('Product tags for categorization'),
       inStock: z.boolean().describe('Whether the product is in stock'),
     }),
@@ -128,9 +128,9 @@ async function example5_bestPractices() {
   const { object: good } = await generateObject({
     model: amp('default'),
     schema: z.object({
-      title: z.string().describe('Article title (50-100 characters)'),
-      summary: z.string().describe('Brief summary (max 200 characters)'),
-      readingTime: z.number().describe('Estimated reading time in minutes'),
+      title: z.string().min(50).max(100).describe('Article title (50-100 characters)'),
+      summary: z.string().max(200).describe('Brief summary (max 200 characters)'),
+      readingTime: z.number().int().positive().describe('Estimated reading time in minutes'),
       tags: z.array(z.string()).describe('3-5 relevant tags').min(3).max(5),
     }),
     prompt:

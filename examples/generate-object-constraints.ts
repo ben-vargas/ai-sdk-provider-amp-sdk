@@ -116,7 +116,7 @@ async function example3_stringPatterns() {
           /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/,
           'Must contain uppercase, lowercase, number, and special character'
         ),
-      phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, 'E.164 phone format'),
+      phone: z.string().regex(/^\+[1-9]\d{1,14}$/, 'E.164 phone format'),
       dateOfBirth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'YYYY-MM-DD format'),
       socialMedia: z.object({
         twitter: z
@@ -268,6 +268,17 @@ async function example5_complexValidation() {
         total: z.number().positive().multipleOf(0.01),
       }),
     }),
+  }).superRefine(({ invoice }, ctx) => {
+    // Validate due date is after issue date
+    const issueDate = new Date(invoice.issueDate);
+    const dueDate = new Date(invoice.dueDate);
+    if (dueDate <= issueDate) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['invoice', 'dueDate'],
+        message: 'Due date must be after issue date',
+      });
+    }
   });
 
   const { object } = await generateObject({
